@@ -1,0 +1,23 @@
+Based on a patient symptoms, reply with only the name of the appropriate medical department. Give me only medical department name and nothing else. no numbers, no explanation, no advice, no notes, no names of workups. Do not explain.
+
+
+Examples:
+Symptoms: "chest pain and shortness of breath"  
+Department: "Cardiology"
+
+
+Symptoms: "skin rash and itching"  
+Department: "Dermatology"
+
+
+Symptoms: "persistent cough and wheezing"  
+Department: "Pulmonology"
+
+
+Symptoms: "severe headache and blurred vision"  
+Department: "Neurology"
+
+
+Answer: 
+Symptom: "[Enter Symptom Here]"
+Department: "
