@@ -1,0 +1,1866 @@
+{
+  "name": "Symptom Checker Bot",
+  "type": "action",
+  "counts": {
+    "actions": 6,
+    "intents": 3,
+    "entities": 5,
+    "data_types": 0,
+    "collections": 0,
+    "global_variables": 2
+  },
+  "status": "Available",
+  "language": "en",
+  "skill_id": "7216aeae-bd92-4024-a58f-0399a11bddec",
+  "workspace": {
+    "actions": [
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "danger_word_detected",
+            "title": "Connect to agent",
+            "handlers": [],
+            "resolver": {
+              "type": "fallback"
+            },
+            "variable": "danger_word_detected_variable",
+            "condition": {
+              "entity": "danger_words"
+            },
+            "next_step": "profanity_detected"
+          },
+          {
+            "step": "profanity_detected",
+            "title": "Show warning",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Please use appropriate language when interacting with the assistant."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "max_hits",
+                "handler": "max_hits_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "max_hits": 2,
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "profanity_detected_variable",
+            "condition": {
+              "entity": "profane_words"
+            }
+          }
+        ],
+        "title": "Trigger word detected",
+        "action": "run_always",
+        "boosts": [],
+        "handlers": [],
+        "variables": [
+          {
+            "title": "Profanity detected",
+            "variable": "danger_word_detected_variable",
+            "data_type": "any"
+          },
+          {
+            "title": "Profane word detected",
+            "variable": "profanity_detected_variable",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "anything_else"
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_001",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "I'm afraid I don't understand. Please rephrase your question."
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_001",
+            "condition": {
+              "lte": [
+                {
+                  "system_variable": "no_action_matches_count"
+                },
+                {
+                  "scalar": 3
+                }
+              ]
+            },
+            "next_step": "step_002"
+          },
+          {
+            "step": "step_002",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": ""
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "invoke_another_action_and_end",
+              "invoke_action": {
+                "action": "fallback",
+                "policy": "default",
+                "parameters": null,
+                "result_variable": "step_002_result_1"
+              }
+            },
+            "variable": "step_002",
+            "condition": {
+              "gt": [
+                {
+                  "system_variable": "no_action_matches_count"
+                },
+                {
+                  "scalar": 3
+                }
+              ]
+            }
+          }
+        ],
+        "title": "No matches",
+        "action": "anything_else",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "expression": "anything_else"
+        },
+        "variables": [
+          {
+            "title": "I am afraid I do not understand what you are asking, please re-p",
+            "variable": "step_001",
+            "data_type": "any"
+          },
+          {
+            "variable": "step_002",
+            "data_type": "any"
+          },
+          {
+            "variable": "step_002_result_1",
+            "data_type": "any"
+          }
+        ],
+        "disambiguation_opt_out": true
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_001",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "Welcome, how can I assist you?"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_001"
+          }
+        ],
+        "title": "Greet customer",
+        "action": "welcome",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "expression": "welcome"
+        },
+        "variables": [
+          {
+            "variable": "step_001",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "action_29337",
+        "disambiguation_opt_out": true
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_001",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "I'm afraid I don't understand. What is it that you would like to do?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                },
+                {
+                  "options": [
+                    {
+                      "label": "Know what I do",
+                      "value": {
+                        "input": {
+                          "text": "Know what I do"
+                        }
+                      }
+                    },
+                    {
+                      "label": "Find a medical department",
+                      "value": {
+                        "input": {
+                          "text": "Find a medical department"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "I didn't catch that. Select a valid option:"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "entity_28626",
+              "max_tries": 3
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_001",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "No action matches"
+                }
+              ]
+            },
+            "next_step": "step_132"
+          },
+          {
+            "step": "step_132",
+            "handlers": [],
+            "resolver": {
+              "type": "invoke_another_action_and_end",
+              "invoke_action": {
+                "action": "action_29337",
+                "policy": "default",
+                "parameters": null,
+                "result_variable": "step_132_result_1"
+              }
+            },
+            "variable": "step_132",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_001"
+                },
+                {
+                  "value": "Know what I do",
+                  "from_entity": "entity_28626"
+                }
+              ]
+            },
+            "next_step": "step_610"
+          },
+          {
+            "step": "step_610",
+            "handlers": [],
+            "resolver": {
+              "type": "invoke_another_action",
+              "invoke_action": {
+                "action": "action_16232",
+                "policy": "default",
+                "parameters": null,
+                "result_variable": "step_610_result_1"
+              }
+            },
+            "variable": "step_610",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_001"
+                },
+                {
+                  "value": "Find a medical department",
+                  "from_entity": "entity_28626"
+                }
+              ]
+            },
+            "next_step": "step_002"
+          },
+          {
+            "step": "step_002",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Sorry I couldn't assist you. Currently we have no agents. Please try again later."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_002",
+            "condition": {
+              "eq": [
+                {
+                  "system_variable": "fallback_reason"
+                },
+                {
+                  "scalar": "Agent requested"
+                }
+              ]
+            }
+          }
+        ],
+        "title": "Fallback",
+        "action": "fallback",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "intent": "fallback_connect_to_agent"
+        },
+        "variables": [
+          {
+            "title": "I'm afraid I don't understand. What is it that you would like to",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_001",
+            "data_type": "any"
+          },
+          {
+            "title": "Sorry I couldn't assist you. Currently we have no agents. Please",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_002",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_132",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_132_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_610",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_610_result_1",
+            "data_type": "any"
+          }
+        ],
+        "next_action": "run_always",
+        "disambiguation_opt_out": true
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_881",
+            "title": "Explanation",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Hello! I am a medical chatbot who's purpose is to help you find the appropriate medical department to visit for your symptoms."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential",
+                  "repeat_on_reprompt": false
+                },
+                {
+                  "options": [
+                    {
+                      "label": "Cool!",
+                      "value": {
+                        "input": {
+                          "text": "Cool!"
+                        }
+                      }
+                    },
+                    {
+                      "label": "Alright...",
+                      "value": {
+                        "input": {
+                          "text": "Alright..."
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "I didn't catch that. Select a valid option:"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "entity_10354",
+              "max_tries": 3
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_881",
+            "next_step": "step_100"
+          },
+          {
+            "step": "step_100",
+            "title": "Next action",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Would you like me to find a department for you?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential",
+                  "repeat_on_reprompt": false
+                },
+                {
+                  "options": [
+                    {
+                      "label": "Yes",
+                      "value": {
+                        "input": {
+                          "text": "Yes"
+                        }
+                      }
+                    },
+                    {
+                      "label": "No",
+                      "value": {
+                        "input": {
+                          "text": "No"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "I'm sorry, I did not catch that, please restate your response."
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "sys-yes-no",
+              "max_tries": 3,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_100",
+            "next_step": "step_721"
+          },
+          {
+            "step": "step_721",
+            "handlers": [],
+            "resolver": {
+              "type": "invoke_another_action_and_end",
+              "invoke_action": {
+                "action": "action_16232",
+                "policy": "default",
+                "parameters": null,
+                "result_variable": "step_721_result_1"
+              }
+            },
+            "variable": "step_721",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_100"
+                },
+                {
+                  "scalar": "yes"
+                }
+              ]
+            },
+            "next_step": "step_677"
+          },
+          {
+            "step": "step_677",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Okay! I'll be here whenever you need me."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_677",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_100"
+                },
+                {
+                  "scalar": "no"
+                }
+              ]
+            }
+          }
+        ],
+        "title": "See what I do",
+        "action": "action_29337",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "intent": "action_29337_intent_43936"
+        },
+        "variables": [
+          {
+            "title": "Next action",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_100",
+            "data_type": "yes_no"
+          },
+          {
+            "title": "Okay! I'll be here whenever you need me.",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_677",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_721",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_721_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "Explanation",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_881",
+            "data_type": "any"
+          }
+        ],
+        "launch_mode": "learning",
+        "next_action": "action_16232",
+        "topic_switch": {
+          "allowed_from": true,
+          "allowed_into": true,
+          "never_return": false
+        },
+        "disambiguation_opt_out": false
+      },
+      {
+        "type": "standard",
+        "steps": [
+          {
+            "step": "step_710",
+            "title": "Collect Symptom",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Please describe your symptoms."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "context": {
+              "variables": []
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "I'm sorry, I did not catch that, please restate your response."
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "free_text": true,
+              "allow_topic_switch": false,
+              "collect_verbatim_response": true,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_710",
+            "next_step": "step_175"
+          },
+          {
+            "step": "step_175",
+            "title": "Undefined",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "I'm sorry could you try that again?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "replay",
+              "clear": [
+                {
+                  "variable": "step_710"
+                }
+              ]
+            },
+            "variable": "step_175",
+            "condition": {
+              "not": {
+                "exists": {
+                  "variable": "step_710"
+                }
+              }
+            },
+            "next_step": "step_755"
+          },
+          {
+            "step": "step_755",
+            "title": "Confirm",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "You said: "
+                          },
+                          {
+                            "variable": "step_710"
+                          },
+                          {
+                            "scalar": ".\n\nIs that right?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential",
+                  "repeat_on_reprompt": false
+                },
+                {
+                  "options": [
+                    {
+                      "label": "Yes",
+                      "value": {
+                        "input": {
+                          "text": "Yes"
+                        }
+                      }
+                    },
+                    {
+                      "label": "No",
+                      "value": {
+                        "input": {
+                          "text": "No"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "I'm sorry, I did not catch that, please restate your response."
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "sys-yes-no",
+              "max_tries": 3,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_755",
+            "condition": {
+              "exists": {
+                "variable": "step_710"
+              }
+            },
+            "next_step": "step_472"
+          },
+          {
+            "step": "step_472",
+            "title": "Check again",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "That's fine, let's go back to the beginning."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "replay",
+              "clear": [
+                {
+                  "variable": "step_710"
+                },
+                {
+                  "variable": "step_755"
+                }
+              ]
+            },
+            "variable": "step_472",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_755"
+                },
+                {
+                  "scalar": "no"
+                }
+              ]
+            },
+            "next_step": "step_565"
+          },
+          {
+            "step": "step_565",
+            "title": "Call Watsonx.ai endpoint",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "Alright then, I will now check which department you should visit."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "I'm sorry, I did not catch that, please restate your response."
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "resolver": {
+              "type": "callout",
+              "callout": {
+                "path": "/ml/v1-beta/generation/text",
+                "type": "integration_interaction",
+                "method": "POST",
+                "internal": {
+                  "spec_hash_id": "c81821d05ab0d9d902fc4d67e43bb294451ff4890fda3d987f40bfdfed4eac29",
+                  "match_scenario": 10,
+                  "catalog_item_id": "1534577a-afee-4e04-aad7-e666e3cd0e4b"
+                },
+                "request_mapping": {
+                  "body": [
+                    {
+                      "value": {
+                        "expression": "('Based on a patient symptoms, reply with only the name of the appropriate medical department. Give me only medical department name and nothing else. no numbers, no explanation, no advice, no notes, no names of workups. Do not explain.\n\nExamples:\nSymptoms: \"chest pain and shortness of breath\"  \nDepartment: \"Cardiology\"\n\nSymptoms: \"skin rash and itching\"  \nDepartment: \"Dermatology\"\n\nSymptoms: \"persistent cough and wheezing\"  \nDepartment: \"Pulmonology\"\n\nSymptoms: \"severe headache and blurred vision\"  \nDepartment: \"Neurology\"\n\nAnswer: \nSymptom: \"').append(${step_710}.append('\"\n Department: \"'))"
+                      },
+                      "parameter": "input"
+                    },
+                    {
+                      "value": {
+                        "scalar": "ibm/granite-3-3-8b-instruct"
+                      },
+                      "parameter": "model_id"
+                    },
+                    {
+                      "value": {
+                        "scalar": "1acf3016-7a56-47d2-904e-475f50036351"
+                      },
+                      "parameter": "project_id"
+                    },
+                    {
+                      "value": {
+                        "scalar": 11
+                      },
+                      "parameter": "parameters.max_new_tokens"
+                    },
+                    {
+                      "value": {
+                        "scalar": 1
+                      },
+                      "parameter": "parameters.min_new_tokens"
+                    },
+                    {
+                      "value": {
+                        "scalar": 2
+                      },
+                      "parameter": "parameters.repetition_penalty"
+                    },
+                    {
+                      "value": {
+                        "expression": "[\"\\n\", \"\\\"\", \"y\", \"Y\"]"
+                      },
+                      "parameter": "parameters.stop_sequences"
+                    }
+                  ],
+                  "query": [
+                    {
+                      "value": {
+                        "scalar": "2023-05-29"
+                      },
+                      "parameter": "version"
+                    }
+                  ]
+                },
+                "result_variable": "step_565_result_1"
+              }
+            },
+            "variable": "step_565",
+            "condition": {
+              "exists": {
+                "variable": "step_710"
+              }
+            },
+            "next_step": "step_320"
+          },
+          {
+            "step": "step_320",
+            "title": "Extract output",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "You should visit the "
+                          },
+                          {
+                            "skill_variable": "department"
+                          },
+                          {
+                            "scalar": " department at your local hospital."
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "context": {
+              "variables": [
+                {
+                  "value": {
+                    "expression": "${step_565_result_1.body.results}[0].generated_text"
+                  },
+                  "skill_variable": "department"
+                }
+              ]
+            },
+            "handlers": [],
+            "resolver": {
+              "type": "end_action"
+            },
+            "variable": "step_320",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_565_result_1",
+                  "variable_path": "success"
+                },
+                {
+                  "scalar": true
+                }
+              ]
+            },
+            "next_step": "step_560"
+          },
+          {
+            "step": "step_560",
+            "title": "Try again?",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text_expression": {
+                        "concat": [
+                          {
+                            "scalar": "I'm sorry, but it seems I wasn't able to find the answer. Would you like to try again?"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential",
+                  "repeat_on_reprompt": false
+                },
+                {
+                  "options": [
+                    {
+                      "label": "Yes",
+                      "value": {
+                        "input": {
+                          "text": "Yes"
+                        }
+                      }
+                    },
+                    {
+                      "label": "No",
+                      "value": {
+                        "input": {
+                          "text": "No"
+                        }
+                      }
+                    }
+                  ],
+                  "response_type": "option",
+                  "repeat_on_reprompt": true
+                }
+              ]
+            },
+            "handlers": [
+              {
+                "type": "not_found",
+                "title": "validation_not_found_handler",
+                "output": {
+                  "generic": [
+                    {
+                      "values": [
+                        {
+                          "text_expression": {
+                            "concat": [
+                              {
+                                "scalar": "I'm sorry, I did not catch that, please restate your response."
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "response_type": "text",
+                      "selection_policy": "incremental"
+                    }
+                  ]
+                },
+                "handler": "validation_not_found_handler",
+                "resolver": {
+                  "type": "prompt_again"
+                },
+                "next_handler": "validation_not_found_max_tries_handler"
+              },
+              {
+                "type": "not_found_max_tries",
+                "title": "validation_not_found_max_tries_handler",
+                "handler": "validation_not_found_max_tries_handler",
+                "resolver": {
+                  "type": "fallback"
+                }
+              }
+            ],
+            "question": {
+              "entity": "sys-yes-no",
+              "max_tries": 3,
+              "response_collection_behavior": "always_ask"
+            },
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_560",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_565_result_1",
+                  "variable_path": "success"
+                },
+                {
+                  "scalar": false
+                }
+              ]
+            },
+            "next_step": "step_198"
+          },
+          {
+            "step": "step_198",
+            "title": "Go back",
+            "handlers": [],
+            "resolver": {
+              "type": "replay",
+              "clear": [
+                {
+                  "variable": "step_710"
+                },
+                {
+                  "variable": "step_175"
+                },
+                {
+                  "variable": "step_755"
+                },
+                {
+                  "variable": "step_472"
+                },
+                {
+                  "variable": "step_565"
+                },
+                {
+                  "variable": "step_320"
+                },
+                {
+                  "variable": "step_560"
+                }
+              ]
+            },
+            "variable": "step_198",
+            "condition": {
+              "eq": [
+                {
+                  "variable": "step_560"
+                },
+                {
+                  "scalar": "yes"
+                }
+              ]
+            },
+            "next_step": "step_620"
+          },
+          {
+            "step": "step_620",
+            "handlers": [],
+            "resolver": {
+              "type": "continue"
+            },
+            "variable": "step_620"
+          }
+        ],
+        "title": "Recommend medical department",
+        "action": "action_16232",
+        "boosts": [],
+        "handlers": [],
+        "condition": {
+          "intent": "action_16232_intent_31219"
+        },
+        "variables": [
+          {
+            "title": "Undefined",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_175",
+            "data_type": "any"
+          },
+          {
+            "title": "Go back",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_198",
+            "data_type": "any"
+          },
+          {
+            "title": "Extract output",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_320",
+            "data_type": "any"
+          },
+          {
+            "title": "Check again",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_472",
+            "data_type": "any"
+          },
+          {
+            "title": "Extension failure",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_560",
+            "data_type": "yes_no"
+          },
+          {
+            "title": "Call Watsonx.ai endpoint",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_565",
+            "data_type": "any"
+          },
+          {
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_565_result_1",
+            "data_type": "any"
+          },
+          {
+            "title": "No response",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_620",
+            "data_type": "any"
+          },
+          {
+            "title": "Collect Symptom",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_710",
+            "data_type": "any"
+          },
+          {
+            "title": "Confirm",
+            "privacy": {
+              "enabled": false
+            },
+            "variable": "step_755",
+            "data_type": "yes_no"
+          }
+        ],
+        "launch_mode": "learning",
+        "next_action": "fallback",
+        "display_name": "SymptomChecker",
+        "topic_switch": {
+          "allowed_from": true,
+          "allowed_into": true,
+          "never_return": false
+        },
+        "disambiguation_opt_out": false
+      }
+    ],
+    "intents": [
+      {
+        "intent": "action_29337_intent_43936",
+        "examples": [
+          {
+            "text": "See what I do"
+          },
+          {
+            "text": "What do you do"
+          },
+          {
+            "text": "What's your purpose"
+          },
+          {
+            "text": "Help"
+          },
+          {
+            "text": "Why do you exist"
+          },
+          {
+            "text": "What is this chatbot's use"
+          }
+        ]
+      },
+      {
+        "intent": "fallback_connect_to_agent",
+        "examples": [
+          {
+            "text": "I would like to speak to someone"
+          },
+          {
+            "text": "What's happening"
+          },
+          {
+            "text": "I don't understand"
+          },
+          {
+            "text": "Call agent"
+          },
+          {
+            "text": "Agent help"
+          },
+          {
+            "text": "I would like to speak to a human"
+          },
+          {
+            "text": "Can I connect to an agent?"
+          }
+        ],
+        "description": "Please transfer me to an agent"
+      },
+      {
+        "intent": "action_16232_intent_31219",
+        "examples": [
+          {
+            "text": "Where should I visit"
+          },
+          {
+            "text": "Which medical department should I visit?"
+          },
+          {
+            "text": "Check my symptoms"
+          },
+          {
+            "text": "I'm having symptoms"
+          },
+          {
+            "text": "I feel sick"
+          },
+          {
+            "text": "I feel"
+          },
+          {
+            "text": "I don't feel well"
+          },
+          {
+            "text": "Collect Symptom"
+          },
+          {
+            "text": "I'm in pain"
+          },
+          {
+            "text": "I need to see the doctor"
+          },
+          {
+            "text": "It hurts"
+          },
+          {
+            "text": "I feel horrible"
+          },
+          {
+            "text": "What should I do?"
+          },
+          {
+            "text": "Recommend a medical department to me"
+          },
+          {
+            "text": "What type of doctor should I see?"
+          },
+          {
+            "text": "Which department is right for my symptoms?"
+          },
+          {
+            "text": "I don't feel good"
+          },
+          {
+            "text": "Should I see a doctor?"
+          },
+          {
+            "text": "Where should I go?"
+          }
+        ]
+      }
+    ],
+    "entities": [
+      {
+        "entity": "entity_28626",
+        "values": [
+          {
+            "type": "synonyms",
+            "value": "Know what I do",
+            "synonyms": []
+          },
+          {
+            "type": "synonyms",
+            "value": "Find a medical department",
+            "synonyms": []
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "sys-yes-no",
+        "values": []
+      },
+      {
+        "entity": "profane_words",
+        "values": [],
+        "fuzzy_match": false
+      },
+      {
+        "entity": "entity_10354",
+        "values": [
+          {
+            "type": "synonyms",
+            "value": "Alright...",
+            "synonyms": []
+          },
+          {
+            "type": "synonyms",
+            "value": "Cool!",
+            "synonyms": []
+          }
+        ],
+        "fuzzy_match": true
+      },
+      {
+        "entity": "danger_words",
+        "values": [],
+        "fuzzy_match": false
+      }
+    ],
+    "metadata": {
+      "api_version": {
+        "major_version": "v2",
+        "minor_version": "2018-11-08"
+      },
+      "skill": {
+        "counts": {
+          "actions": 6,
+          "intents": 3,
+          "entities": 5,
+          "data_types": 0,
+          "collections": 0,
+          "global_variables": 2
+        }
+      }
+    },
+    "variables": [
+      {
+        "title": "department",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "department",
+        "data_type": "string",
+        "description": ""
+      },
+      {
+        "title": "stop",
+        "privacy": {
+          "enabled": false
+        },
+        "variable": "stop",
+        "data_type": "string",
+        "description": "",
+        "initial_value": {
+          "scalar": "[\"\\n\"]"
+        }
+      }
+    ],
+    "data_types": [],
+    "collections": [],
+    "counterexamples": [],
+    "system_settings": {
+      "nlp": {
+        "model": "latest"
+      },
+      "variable": {
+        "format": {
+          "time": {
+            "pattern": "short"
+          },
+          "currency": {
+            "fraction_digits": 2
+          }
+        }
+      },
+      "off_topic": {
+        "enabled": true
+      },
+      "auto_learn": {
+        "apply": true
+      },
+      "launch_mode": {
+        "default": "learning",
+        "enabled": false,
+        "learning": {
+          "step_retry_threshold": 2,
+          "use_connect_to_support": "more_often",
+          "single_answer_clarification": "more_often",
+          "disambiguation_clarification": "more_often"
+        },
+        "confident": {
+          "step_retry_threshold": 4,
+          "use_connect_to_support": "sometimes",
+          "single_answer_clarification": "sometimes",
+          "disambiguation_clarification": "sometimes"
+        }
+      },
+      "topic_switch": {
+        "enabled": true,
+        "messages": {
+          "enable_confirmation": true,
+          "confirmation_failure": {
+            "generic": [
+              {
+                "values": [
+                  {
+                    "text_expression": {
+                      "concat": [
+                        {
+                          "scalar": "I'm sorry, I did not catch that, please confirm."
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "response_type": "text",
+                "selection_policy": "sequential"
+              }
+            ]
+          },
+          "confirmation_request": {
+            "generic": [
+              {
+                "values": [
+                  {
+                    "text_expression": {
+                      "concat": [
+                        {
+                          "scalar": "Do you want to continue with the previous topic: "
+                        },
+                        {
+                          "system_variable": "digressed_from"
+                        },
+                        {
+                          "scalar": "?"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "response_type": "text",
+                "selection_policy": "sequential"
+              },
+              {
+                "options": [
+                  {
+                    "label": "Yes",
+                    "value": {
+                      "input": {
+                        "text": "Yes"
+                      }
+                    }
+                  },
+                  {
+                    "label": "No",
+                    "value": {
+                      "input": {
+                        "text": "No"
+                      }
+                    }
+                  }
+                ],
+                "response_type": "option",
+                "repeat_on_reprompt": true
+              }
+            ]
+          }
+        },
+        "max_tries": 3
+      },
+      "generative_ai": {
+        "model_id": "ibm/granite-3-8b-instruct",
+        "hap_filter": {
+          "output": {
+            "enabled": true
+          }
+        },
+        "slot_filling": {
+          "enabled": true
+        },
+        "prompt_instruction": "You are a medical in0take assistant. You need to take in symptoms of ",
+        "general_purpose_answering": {
+          "enabled": false
+        }
+      },
+      "disambiguation": {
+        "prompt": "Did you mean:",
+        "enabled": true,
+        "randomize": true,
+        "max_suggestions": 5,
+        "suggestion_text_policy": "title",
+        "none_of_the_above_prompt": "None of the above",
+        "use_connect_to_support_prompt": "Connect to support",
+        "single_answer_clarification_prompt": "Something else"
+      },
+      "search_routing": {
+        "target": "conversational_search"
+      },
+      "spelling_auto_correct": true
+    },
+    "learning_opt_out": false,
+    "language": "en"
+  },
+  "description": "created for assistant 3fc1f895-bd0e-4719-bd89-ff09b794b304",
+  "dialog_settings": {
+    "source_assistant": "c18451f9-85af-4f6b-8e8c-6c6e289e44c6"
+  },
+  "created": "2025-07-05T15:27:38.671Z",
+  "updated": "2025-07-05T15:27:38.671Z",
+  "snapshot": "1",
+  "assistant_id": "3fc1f895-bd0e-4719-bd89-ff09b794b304",
+  "assistant_references": []
+}
