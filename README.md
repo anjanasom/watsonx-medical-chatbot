@@ -37,7 +37,7 @@ To re-import this assistant in your own Watson Assistant environment:
 ## Screenshots
 See the `/screenshots/` folder
 
-###Contents:
+### Contents:
 - chatbot_greet shows the overall preview of how the chatbot looks and greets the user.
 - promptLab_prompt and promptLab_generated show the prompt engineering logic
 - SeeWhatIDo_flow contains the assistant flow of the 'What do I do' action
