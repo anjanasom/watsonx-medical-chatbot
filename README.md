@@ -1,4 +1,4 @@
-# watsonx-medical-chatbot
+# Medical Department Recommender Chatbot
 
 This project was created using IBM Watsonx assistant and Watsonx.ai. The chatbot takes the user's medical symptoms as input and recommends the appropriate medical department to consult (example: Cardiology, Nephrology, etc.).
 
