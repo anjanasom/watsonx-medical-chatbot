@@ -18,6 +18,8 @@ To classify user's symptoms using a simply conversational interface powered by a
 5. It instructs the model to return only the department after few shot prompting
 6. Response is displayed to the user
 
+**Note:** This project is currently tested in IBM Watson Assistant’s preview environment.
+
 ## Assistant Export (Watsonx Assistant)
 This project includes a full exported snapshot (`v1.0.json`) of the IBM Watson Assistant used in this chatbot.
 
